@@ -5,25 +5,25 @@ import React, { useState } from 'react';
 
 
 function App() {
-    const [url,setUrl] = useState('');
+    const [description,setDescription] = useState('');
     const [links, setLinks] = useState([]);
     const [error, setError] = useState(null);
 
     const onClickHandler = async (e) => {
         e.preventDefault(); // Prevents the default form submission
         try {
-            const response = await fetch('http://127.0.0.1:5000/scrape/', {
+            const response = await fetch('http://127.0.0.1:5000/scrape/google', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({url}),
+                body: JSON.stringify({description}),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                setLinks(data.links);
+                setLinks(data.jobs);
                 setError(null);
             } else {
                 setError(data.error || 'Something went wrong!');
@@ -36,20 +36,23 @@ function App() {
     }
 
   const handleInputChange = (e) => {
-    setUrl(e.target.value); // Updates the URL state
+    setDescription(e.target.value);
+    console.log(description)
   };
-  console.log(links)
+
+  console.log(links);
   return (
     <div className="App">
     <nav className="navbar navbar-expand-lg bg-black">
       <div class="container-fluid">
         <a className="navbar-brand text-light">WebScraper</a>
       <form className="d-flex" role="search" onSubmit={onClickHandler}>
-        <input className="form-control me-2" type="url" value={url} onChange={handleInputChange} placeholder="Enter a URL"></input>
+        <input className="form-control me-2" type="string" value={description} onChange={handleInputChange} placeholder="Enter a Job"></input>
         <button className="btn btn-outline-success text-light" type="submit">Submit</button>
       </form>
       </div>
     </nav>
+    <h1> Jobs</h1>
     </div>
   );
 }
