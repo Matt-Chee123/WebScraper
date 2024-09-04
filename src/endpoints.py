@@ -28,7 +28,7 @@ def scrape():
 
         # Parse the response content
         soup = BeautifulSoup(response.text, 'html.parser')
-        specific_div = soup.find('div', class_='yf')
+        specific_div = soup.find('div', class_='ZNyqGc')
 
         # Extract headings (h1, h2, h3)
         if not specific_div:
