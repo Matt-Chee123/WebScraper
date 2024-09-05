@@ -32,7 +32,7 @@ def scrapeGoogle():
     driver = webdriver.Chrome(service=s, options=chrome_options)
     time.sleep(2)
     driver.maximize_window()
-    url='https://www.google.com/search?q=jobs%20london%20graduate%20software%20developer&jbr=sep:0&udm=8&ved=2ahUKEwip7Iq026mIAxXFWUEAHTNoAccQ3L8LegQIIRAM'
+    url=f'https://www.google.com/search?q=jobs%20london%20{encoded_query}&jbr=sep:0&udm=8&ved=2ahUKEwip7Iq026mIAxXFWUEAHTNoAccQ3L8LegQIIRAM'
     driver.get(url)
     time.sleep(3)
     driver.find_element(By.XPATH,"//*[@id='W0wltc']/div").click()
