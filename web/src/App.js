@@ -5,40 +5,17 @@ import GoogleContainer from './googleContainer/GoogleContainer';
 
 function App() {
     const [description,setDescription] = useState('');
-    const [links, setLinks] = useState([]);
-    const [error, setError] = useState(null);
+    const [submitDescription, setSubmitDescription] = useState(''); // To store the submitted description
 
-    const onClickHandler = async (e) => {
-        e.preventDefault(); // Prevents the default form submission
-        try {
-            const response = await fetch('http://127.0.0.1:5000/scrape/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({description}),
-            });
+    const handleInputChange = (e) => {
+        setDescription(e.target.value);
+    };
 
-            const data = await response.json();
+    const onClickHandler = (e) => {
+        e.preventDefault(); // Prevent form from submitting and reloading
+        setSubmitDescription(description); // Update the description to be used for the API call
+    };
 
-            if (response.ok) {
-                setLinks(data.jobs);
-                setError(null);
-            } else {
-                setError(data.error || 'Something went wrong!');
-                setLinks([]);
-            }
-        } catch (err) {
-            setError('Failed to fetch data');
-            setLinks([]);
-        }
-    }
-
-  const handleInputChange = (e) => {
-    setDescription(e.target.value);
-  };
-
-  console.log(links);
   return (
     <div className="App">
     <nav className="navbar navbar-expand-lg bg-black">
@@ -50,7 +27,7 @@ function App() {
       </form>
       </div>
     </nav>
-    <GoogleContainer googJobs={links}/>
+    <GoogleContainer description={submitDescription}/>
     </div>
   );
 }
