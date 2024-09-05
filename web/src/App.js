@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
-
+import GoogleContainer from './googleContainer/GoogleContainer';
 
 function App() {
     const [description,setDescription] = useState('');
@@ -37,7 +36,6 @@ function App() {
 
   const handleInputChange = (e) => {
     setDescription(e.target.value);
-    console.log(description)
   };
 
   console.log(links);
@@ -52,7 +50,7 @@ function App() {
       </form>
       </div>
     </nav>
-    <h1> Jobs</h1>
+    <GoogleContainer googJobs={links}/>
     </div>
   );
 }

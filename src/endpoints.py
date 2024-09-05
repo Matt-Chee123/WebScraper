@@ -46,8 +46,14 @@ def scrapeGoogle():
         jobs=[]
 
         for a_tag in specific_div.find_all('a', href=True):
-            jobs.append(a_tag['href'])
+            job_link = a_tag['href']
+            job_name_div = a_tag.find('div', class_='tNxQIb PUpOsf')
+            job_name = job_name_div.get_text(strip=True)
 
+            jobs.append ({
+                'link': job_link,
+                'name': job_name
+            })
         return jsonify({'jobs': jobs})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
