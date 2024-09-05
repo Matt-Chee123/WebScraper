@@ -59,4 +59,40 @@ def scrapeGoogle():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/scrape/linkedin', methods=['POST'])
+def scrapeLinked():
+    data = request.json
+    query = data.get('description')
+    if not query:
+        return jsonify({'error': 'LinkedIn needs a query'}), 400
+
+    encoded_query = urllib.parse.quote_plus(query)
+
+    driver = webdriver.Chrome(service=s)
+    time.sleep(random.randint(1,3))
+    driver.maximize_window()
+    url=f"https://www.linkedin.com/jobs/search?keywords={encoded_query}&location=London%20Area%2C%20United%20Kingdom&geoId=90009496&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0"
+    driver.get(url)
+    time.sleep(random.randint(1,3))
+    try:
+        soup = BeautifulSoup(driver.page_source,'html.parser')
+        specific_div = soup.find('ul', class_='jobs-search__results-list')
+        jobs = []
+
+        for job_item in specific_div.find_all('li'):  # Loop through each <li> element (job listing)
+            a_tag = job_item.find('a', href=True)  # Find the <a> tag
+            job_link = a_tag['href'] if a_tag else "No link found"  # Extract the href
+
+            job_name_div = job_item.find('span', class_='sr-only')  # Find the <span> inside the same <li>
+            job_name = job_name_div.get_text(strip=True) if job_name_div else "No job name found"
+
+            jobs.append({
+                'link': job_link,
+                'name': job_name
+            })
+        return jsonify({'jobs': jobs})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+>>>>>>> f1d0b7955d3ac64cb355ef15afc1a66efb2c2aa9
 
