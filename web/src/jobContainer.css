@@ -9,6 +9,11 @@
     overflow-x: hidden;
 }
 
+.jobContainer ul {
+    text-align: left;
+    padding-left: 4vw
+}
+
 .urlList {
     list-style-type: none; /* Remove default list styling */
     padding: 0;
