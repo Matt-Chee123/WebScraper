@@ -2,7 +2,7 @@ import '../jobContainer.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 
-function GoogleContainer({ description }) {
+function LinkedContainer({ description }) {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState(null);
 
@@ -10,7 +10,7 @@ function GoogleContainer({ description }) {
         if (description) { // Only fetch if a description is provided
             const fetchJobs = async () => {
                 try {
-                    const response = await fetch('http://127.0.0.1:5000/scrape/google', {
+                    const response = await fetch('http://127.0.0.1:5000/scrape/linkedin', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -36,10 +36,11 @@ function GoogleContainer({ description }) {
             fetchJobs(); // Trigger the API call when description changes
         }
     }, [description]);
+    console.log(jobs);
 
     return(
         <div className="jobContainer">
-            <h3>Google Jobs</h3>
+            <h3>LinkedIn Jobs</h3>
             <ul className="urlList">
                 { jobs.map((url,index) => (
                     <li key={index}><a href={url.link} target="_blank" rel="noopener noreferrer">{url.name}</a></li>
@@ -49,4 +50,4 @@ function GoogleContainer({ description }) {
     )
 }
 
-export default GoogleContainer;
+export default LinkedContainer;

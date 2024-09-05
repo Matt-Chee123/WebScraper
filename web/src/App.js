@@ -2,6 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import GoogleContainer from './googleContainer/GoogleContainer';
+import LinkedContainer from './linkedContainer/LinkedContainer';
 
 function App() {
     const [description,setDescription] = useState('');
@@ -28,6 +29,7 @@ function App() {
       </div>
     </nav>
     <GoogleContainer description={submitDescription}/>
+    <LinkedContainer description={submitDescription}/>
     </div>
   );
 }

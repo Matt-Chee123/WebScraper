@@ -55,6 +55,8 @@ def scrapeGoogle():
                 'link': job_link,
                 'name': job_name
             })
+
+        driver.close()
         return jsonify({'jobs': jobs})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -90,9 +92,10 @@ def scrapeLinked():
                 'link': job_link,
                 'name': job_name
             })
+
+        driver.close()
         return jsonify({'jobs': jobs})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
->>>>>>> f1d0b7955d3ac64cb355ef15afc1a66efb2c2aa9
 
