@@ -42,7 +42,21 @@ function GoogleContainer({ description }) {
             <h3>Google Jobs</h3>
             <ul className="urlList">
                 { jobs.map((url,index) => (
-                    <li key={index}><a href={url.link} target="_blank" rel="noopener noreferrer">{url.name}</a></li>
+                    <li key={index}>
+                    <a href={url.link} target="_blank" rel="noopener noreferrer">{url.name}</a>
+                    <div className="radioButtons">
+                        <input type="radio" id={`job-${index}-accept`}
+                        name={`job-{index}`}
+                        vale="accept"
+                    />
+                    <label htmlFor={`job-${index}-option1`}>Accept</label>
+                        <input type="radio" id={`job-${index}-decline`}
+                        name={`job-{index}`}
+                        vale="decline"
+                    />
+                    <label htmlFor={`job-${index}-option1`}>Decline</label>
+                    </div>
+                    </li>
                 ))}
             </ul>
         </div>

@@ -11,7 +11,8 @@
 
 .jobContainer ul {
     text-align: left;
-    padding-left: 5vw
+    padding-left: 5vw;
+    align-items: center; /* Align items vertically in the center */
 }
 
 .urlList {

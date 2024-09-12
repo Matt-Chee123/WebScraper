@@ -14,16 +14,29 @@
     padding: 0;
     margin: 0;
 }
-
 .urlList li {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
     margin: 10px 0; /* Space between list items */
 }
 
 .urlList a {
+    margin-right: 15px; /* Space between the link and the radio buttons */
     text-decoration: none;
     color: #007bff; /* Link color */
 }
 
+.radioButtons {
+    display: flex;
+    align-items: center;
+}
+
+.radioButtons input {
+    margin-right: 5px; /* Space between radio buttons */
+}
+
+
 .urlList a:hover {
     text-decoration: underline; /* Underline on hover */
 }
+
