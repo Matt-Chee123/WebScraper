@@ -37,6 +37,45 @@ function GoogleContainer({ description }) {
         }
     }, [description]);
 
+
+    const handleRadioClick = async (url,isAccepted) => {
+        if (isAccepted) {
+            try {
+                const response = await fetch('url for saving accepted', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ link: url }), // Send the URL to the server
+                });
+
+                if (response.ok) {
+                    console.log("Link saved successfully to accept file");
+                } else {
+                    console.log("Failed to save link");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        } else {
+            try {
+                const response = await fetch('url for saving declined links', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ link: url }), // Send the URL to the server
+                });
+
+                if (response.ok) {
+                    console.log("Link saved successfully to decline file");
+                } else {
+                    console.log("Failed to save link");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+    };
     return(
         <div className="jobContainer">
             <h3>Google Jobs</h3>
@@ -48,11 +87,13 @@ function GoogleContainer({ description }) {
                         <input type="radio" id={`job-${index}-accept`}
                         name={`job-{index}`}
                         vale="accept"
+                        onClick={() => handleRadioClick(url.link,true)}
                     />
                     <label htmlFor={`job-${index}-option1`}>Accept</label>
                         <input type="radio" id={`job-${index}-decline`}
                         name={`job-{index}`}
                         vale="decline"
+                        onClick={() => handleRadioClick(url.link,false)}
                     />
                     <label htmlFor={`job-${index}-option1`}>Decline</label>
                     </div>
