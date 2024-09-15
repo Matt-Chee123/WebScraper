@@ -41,7 +41,7 @@ function GoogleContainer({ description }) {
     const handleRadioClick = async (url,isAccepted) => {
         if (isAccepted) {
             try {
-                const response = await fetch('url for saving accepted', {
+                const response = await fetch('http://127.0.0.1:5000/job/accepted', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

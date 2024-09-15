@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bs4 import BeautifulSoup
@@ -9,8 +11,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 import random
-
+import boto3
 import time
+
+s3 = boto3.client('s3')
+BUCKET_NAME = 'job-webscrape'
+ACCEPTED_FILE_PATH = '/accepted/'
+ACCEPTED_FILE_NAME = 'accepted.json'
+ACCEPTED_KEY = ACCEPTED_FILE_PATH + ACCEPTED_FILE_NAME
+
+DECLINED_FILE_PATH = '/declined/'
+DECLINED_FILE_NAME = 'declined.json'
+DECLINED_KEY = DECLINED_FILE_PATH + DECLINED_FILE_NAME
 
 app = Flask(__name__)
 CORS(app)
@@ -18,6 +30,52 @@ CORS(app)
 chrome_options = Options()
 chrome_options.add_argument('--disable-notifications')
 s = Service('C:/Program Files/chromedriver-win64/chromedriver.exe')
+
+
+def load_links_from_s3(bucketKey):
+    try:
+        obj = s3.get_object(Bucket=BUCKET_NAME, Key=bucketKey)
+        links = json.loads(obj['Body'].read().decode('utf-8'))
+    except s3.exceptions.NoSuchKey:
+        links = []
+    return links
+
+def save_links_to_s3(bucketKey,links):
+    links_json = json.dumps(links)
+    s3.put_object(Bucket=BUCKET_NAME,Key=bucketKey, Body=links_json)
+
+@app.route('/job/accepted', methods=['POST'])
+def saveAccepted():
+    data = request.get_json()
+    if not data or 'link' not in data:
+        return jsonify({'error': 'data not complete'}), 400
+
+    link = data['link']
+
+    accepted_links = load_links_from_s3(ACCEPTED_KEY)
+
+    accepted_links.append(link)
+
+    save_links_to_s3(ACCEPTED_KEY,accepted_links)
+
+    return jsonify({'message': 'retrieved link and saved link to s3 bucket', 'link': link}), 200
+
+@app.route('/job/declined', methods=['POST'])
+def saveDeclined():
+    data = request.get_json()
+    if not data or 'link' not in data:
+        return jsonify({'error': 'data not complete'}), 400
+
+    link = data['link']
+
+    declined_links = load_links_from_s3(DECLINED_KEY)
+
+    declined_links.append(link)
+
+    save_links_to_s3(DECLINED_KEY,declined_links)
+
+    return jsonify({'message': 'retrieved link and saved link to s3 bucket', 'link': link}), 200
+
 
 @app.route('/scrape/google', methods=['POST'])
 def scrapeGoogle():
