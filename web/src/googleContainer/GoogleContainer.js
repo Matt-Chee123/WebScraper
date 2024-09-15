@@ -2,7 +2,7 @@ import '../jobContainer.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 
-function GoogleContainer({ description }) {
+export default function GoogleContainer({ description }) {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState(null);
 
@@ -59,7 +59,7 @@ function GoogleContainer({ description }) {
             }
         } else {
             try {
-                const response = await fetch('url for saving declined links', {
+                const response = await fetch('http://127.0.0.1:5000/job/declined', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -75,7 +75,8 @@ function GoogleContainer({ description }) {
             } catch (error) {
                 console.error("Error:", error);
             }
-    };
+        };
+    }
     return(
         <div className="jobContainer">
             <h3>Google Jobs</h3>
@@ -103,5 +104,3 @@ function GoogleContainer({ description }) {
         </div>
     )
 }
-
-export default GoogleContainer;
