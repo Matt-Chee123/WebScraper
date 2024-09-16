@@ -36,14 +36,67 @@ function LinkedContainer({ description }) {
             fetchJobs(); // Trigger the API call when description changes
         }
     }, [description]);
-    console.log(jobs);
+    const handleRadioClick = async (url,isAccepted) => {
+        if (isAccepted) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/job/accepted', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ link: url }), // Send the URL to the server
+                });
 
+                if (response.ok) {
+                    console.log("Link saved successfully to accept file");
+                } else {
+                    console.log("Failed to save link");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        } else {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/job/declined', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ link: url }), // Send the URL to the server
+                });
+
+                if (response.ok) {
+                    console.log("Link saved successfully to decline file");
+                } else {
+                    console.log("Failed to save link");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+    }
     return(
         <div className="jobContainer">
             <h3>LinkedIn Jobs</h3>
             <ul className="urlList">
                 { jobs.map((url,index) => (
-                    <li key={index}><a href={url.link} target="_blank" rel="noopener noreferrer">{url.name}</a></li>
+                    <li key={index}>
+                    <a href={url.link} target="_blank" rel="noopener noreferrer">{url.name}</a>
+                    <div className="radioButtons">
+                        <input type="radio" id={`job-${index}-accept`}
+                        name={`job-{index}`}
+                        vale="accept"
+                        onClick={() => handleRadioClick(url.link,true)}
+                    />
+                    <label htmlFor={`job-${index}-option1`}>Accept</label>
+                        <input type="radio" id={`job-${index}-decline`}
+                        name={`job-{index}`}
+                        vale="decline"
+                        onClick={() => handleRadioClick(url.link,false)}
+                    />
+                    <label htmlFor={`job-${index}-option1`}>Decline</label>
+                    </div>
+                    </li>
                 ))}
             </ul>
         </div>
