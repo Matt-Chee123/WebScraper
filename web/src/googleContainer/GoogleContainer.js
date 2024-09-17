@@ -41,7 +41,7 @@ export default function GoogleContainer({ description }) {
     const handleRadioClick = async (url,isAccepted) => {
         if (isAccepted) {
             try {
-                const response = await fetch('http://127.0.0.1:5000/job/accepted', {
+                const response = await fetch('http://127.0.0.1:5000/job/saveAccepted', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export default function GoogleContainer({ description }) {
             }
         } else {
             try {
-                const response = await fetch('http://127.0.0.1:5000/job/declined', {
+                const response = await fetch('http://127.0.0.1:5000/job/saveDeclined', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -102,5 +102,6 @@ export default function GoogleContainer({ description }) {
                 ))}
             </ul>
         </div>
+
     )
 }

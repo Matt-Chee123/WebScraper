@@ -44,7 +44,7 @@ def save_links_to_s3(bucketKey,links):
     links_json = json.dumps(links)
     s3.put_object(Bucket=BUCKET_NAME,Key=bucketKey, Body=links_json)
 
-@app.route('/job/accepted', methods=['POST'])
+@app.route('/job/saveAccepted', methods=['POST'])
 def saveAccepted():
     data = request.get_json()
     if not data or 'link' not in data:
@@ -60,7 +60,18 @@ def saveAccepted():
 
     return jsonify({'message': 'retrieved link and saved link to s3 bucket', 'link': link}), 200
 
-@app.route('/job/declined', methods=['POST'])
+@app.route('/job/getAccepted', methods=['GET'])
+def getAccepted():
+    accepted_links = load_links_from_s3(ACCEPTED_KEY)
+
+    if not accepted_links:
+        return jsonify({'message': 'No accepted links found'}), 404
+
+    return jsonify({'accepted_links': accepted_links}), 200
+
+
+
+@app.route('/job/saveDeclined', methods=['POST'])
 def saveDeclined():
     data = request.get_json()
     if not data or 'link' not in data:
@@ -75,6 +86,16 @@ def saveDeclined():
     save_links_to_s3(DECLINED_KEY,declined_links)
 
     return jsonify({'message': 'retrieved link and saved link to s3 bucket', 'link': link}), 200
+
+@app.route('/job/getDeclined', methods=['GET'])
+def getDeclined():
+    accepted_links = load_links_from_s3(DECLINED_KEY)
+
+    if not accepted_links:
+        return jsonify({'message': 'No accepted links found'}), 404
+
+    return jsonify({'accepted_links': accepted_links}), 200
+
 
 
 @app.route('/scrape/google', methods=['POST'])
