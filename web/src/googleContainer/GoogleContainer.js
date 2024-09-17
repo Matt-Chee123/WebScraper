@@ -1,11 +1,13 @@
 import '../jobContainer.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
+import { useAccepted } from '../contexts/acceptedJobContext';
 
 export default function GoogleContainer({ description }) {
     const [jobs, setJobs] = useState([]);
     const [error, setError] = useState(null);
-
+    const acceptedJobs = useAccepted();
+    console.log(acceptedJobs)
     useEffect(() => {
         if (description) { // Only fetch if a description is provided
             const fetchJobs = async () => {
